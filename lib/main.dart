@@ -48,8 +48,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     // storage.clear();
     // storage.clear();
+    // storage.setItem("amount", "0");
     SettingConfig x = SettingConfig(context);
-    return HomeScreen(
+    return const HomeScreen(
     );
   }
 }

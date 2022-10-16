@@ -23,7 +23,7 @@ class _NavBarState extends State<NavBar> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           InkWell(
-              onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen())),child: const TextNavBar(navItemName: 'Home', icon: Icons.home, on: true)),
+              onTap: ()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen())),child: const TextNavBar(navItemName: 'Home', icon: Icons.home, on: true)),
           InkWell(
             onTap:clearTable,
               child:const TextNavBar(
@@ -32,8 +32,8 @@ class _NavBarState extends State<NavBar> {
               onTap: (){
 
                 LocalStorage l = LocalStorage("tasks");
-                print(l.getItem('expences'));
-                  l.setItem("expences", []);
+                print(l.getItem('expenses'));
+                  l.setItem("expenses", []);
 
                 widget.notifyParent();
               }
@@ -45,7 +45,7 @@ class _NavBarState extends State<NavBar> {
 
   void clearTable() {
     LocalStorage l = LocalStorage("tasks");
-    setState(()=>l.setItem('expences', []));
+    setState(()=>l.setItem('expenses', []));
     print('cleared');
 
     widget.notifyParent();
