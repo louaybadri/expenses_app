@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:masroufi/screens/home_screen.dart';
@@ -42,14 +44,23 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final LocalStorage storage = LocalStorage('tasks');
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      final LocalStorage storage = LocalStorage('tasks');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     // storage.clear();
     // storage.clear();
     // storage.setItem("amount", "0");
+
     SettingConfig x = SettingConfig(context);
+
     return const HomeScreen(
     );
   }
