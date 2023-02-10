@@ -85,7 +85,7 @@ class _DataAndAddState extends State<DataAndAdd> {
                                           BorderRadius.all(Radius.circular(30))),
                                   children: [
                                     AddUpdateExpence(
-                                      id: storage.getItem("expenses").length,
+                                      id: storage.getItem("expenses")==null ? 0 : storage.getItem("expenses").length,
                                       notifyParent: widget.notifyParent,
                                     ),
                                   ],

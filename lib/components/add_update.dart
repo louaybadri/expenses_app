@@ -99,13 +99,13 @@ class _AddUpdateExpenceState extends State<AddUpdateExpence> {
           ),
           InkWell(
               onTap: () {
-                List<dynamic> list = storage.getItem('expenses');
-                List<dynamic> aux;
-                aux = [
-                  textController.text,
-                  valueController.text.isNotEmpty ? valueController.text : "0",
-                  '$hours:$minutes',
-                ];
+                List<Map> list = storage.getItem('expenses') ?? [];
+                Map aux;
+                aux = {
+                  "title":textController.text,
+                  "amount" :valueController.text.isNotEmpty ? valueController.text : "0",
+                  "time":'$hours:$minutes',
+                };
                 double amount = double.parse(
                     storage.getItem("amount").length > 0
                         ? storage.getItem("amount")

@@ -76,8 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          InkWell(onTap: refresh, child: const Text("aaaa")),
-                          SizedBox(
+                         SizedBox(
                             width: SettingConfig.width,
                             child: Center(
                               child: Text("Expenses",
@@ -86,21 +85,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                       fontSize: SettingConfig.height * 0.06)),
                             ),
                           ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                ...expenses.map(
-                                  (e) => HistoriqueUnit(
-                                      id: expenses.indexOf(e),
-                                      notifyParent: refresh,
-                                      icon: Icons.account_box_outlined,
-                                      iconColor: Colors.redAccent,
-                                      amount: double.parse(e[1]),
-                                      time: e[2],
-                                      title: e[0]),
-                                )
-                              ],
+                          SizedBox(
+                            height: SettingConfig.height*0.5,
+                            child: SingleChildScrollView(
+                              child: Center(
+                                child: Column(
+                                  children: [
+                                    ...expenses.map(
+                                      (e) => HistoriqueUnit(
+                                          id: expenses.indexOf(e),
+                                          notifyParent: refresh,
+                                          icon: Icons.account_box_outlined,
+                                          iconColor: Colors.redAccent,
+                                          amount: double.parse(e["amount"]),
+                                          time: e["time"],
+                                          title: e["title"]),
+                                    )
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ],

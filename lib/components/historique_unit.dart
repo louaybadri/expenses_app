@@ -31,8 +31,8 @@ class _HistoriqueUnitState extends State<HistoriqueUnit> {
     return Center(
       child: Container(
         margin: EdgeInsets.all(SettingConfig.height * 0.01),
-        height: SettingConfig.height * 0.4,
-        width: SettingConfig.width * 0.6,
+        // height: SettingConfig.height * 0.4,
+        width: SettingConfig.width * 0.9,
         padding: EdgeInsets.all(SettingConfig.height * 0.01),
         decoration: BoxDecoration(
             boxShadow: [
@@ -45,90 +45,113 @@ class _HistoriqueUnitState extends State<HistoriqueUnit> {
             color: widget.iconColor,
             borderRadius: const BorderRadius.all(Radius.circular(15))),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(30))),
-              child: Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Icon(widget.icon,
-                    color: widget.iconColor, size: SettingConfig.height * 0.05),
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Text(widget.title!,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: SettingConfig.height * 0.05)),
+                Container(
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(30))),
+                  child: Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Icon(widget.icon,
+                        color: widget.iconColor, size: SettingConfig.height * 0.05),
                   ),
                 ),
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SingleChildScrollView(
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: SettingConfig.width * 0.4,
+                      padding: const EdgeInsets.all(8.0),
+                      child: SingleChildScrollView(
+                        // scrollDirection: Axis.horizontal,
+                        child: Text(widget.title!,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: SettingConfig.height * 0.04),
+                        textAlign: TextAlign.center,),
+                      ),
+                    ),
+                    SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Text('${widget.amount?.toStringAsFixed(3)} DT',
                           style: TextStyle(
                               color: const Color.fromRGBO(0, 0, 0, 0.4),
                               fontWeight: FontWeight.bold,
-                              fontSize: SettingConfig.height * 0.035),
-                          textAlign: TextAlign.right),
-                    ))
+                              fontSize: SettingConfig.height * 0.03),
+                          ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  // width: SettingConfig.width * 0.3,
+                  child: Text(widget.time!,
+                      style: TextStyle(
+                          color: const Color.fromRGBO(0, 0, 0, 0.4),
+                          fontSize: SettingConfig.height * 0.035),
+                      textAlign: TextAlign.center),
+                ),
+
               ],
-            ),
-            SizedBox(
-              width: SettingConfig.width * 0.3,
-              child: Text(widget.time!,
-                  style: TextStyle(
-                      color: const Color.fromRGBO(0, 0, 0, 0.4),
-                      fontSize: SettingConfig.height * 0.035),
-                  textAlign: TextAlign.center),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            ), Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                InkWell(
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                      onTap: (){
+                        showDialog(
+                            context: context,
+                            builder: (_) => SimpleDialog(
+                              shape:const  RoundedRectangleBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(30))),
+                              children: [
+                                AddUpdateExpence(
+                                  id:widget.id,
+                                  amount: widget.amount,
+                                  time:widget.time,
+                                  title: widget.title,
+                                  notifyParent: widget.notifyParent,
+
+                                ),
+                              ],
+                            )
+                        );
+                      },
+                      child: const StyledIcon(color: Colors.green, icon: Icons.edit)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
                     onTap: (){
-                      showDialog(
-                          context: context,
-                          builder: (_) => SimpleDialog(
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(30))),
-                            children: [
-                              AddUpdateExpence(
-                                id:widget.id,
-                                amount: widget.amount,
-                                time:widget.time,
-                                title: widget.title,
-                                notifyParent: widget.notifyParent,
+                      final LocalStorage storage = LocalStorage('tasks');
+                      List<dynamic> list = storage.getItem('expenses');
+                      double old=widget.amount??0;
+                      double amount = double.parse(storage.getItem("amount"))+old;
+                      storage.setItem("amount", amount.toString());
+                      list.removeAt(widget.id);
+                      widget.notifyParent();
 
-                              ),
-                            ],
-                          )
-                      );
                     },
-                    child: const StyledIcon(color: Colors.green, icon: Icons.edit)),
-                InkWell(
-                  onTap: (){
-                    final LocalStorage storage = LocalStorage('tasks');
-                    List<dynamic> list = storage.getItem('expenses');
-                    double old=widget.amount??0;
-                    double amount = double.parse(storage.getItem("amount"))+old;
-                    storage.setItem("amount", amount.toString());
-                    list.removeAt(widget.id);
-                    widget.notifyParent();
+                    child:const StyledIcon(color: Colors.red,icon: Icons.currency_exchange),),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    onTap: (){
+                      final LocalStorage storage = LocalStorage('tasks');
+                      List<dynamic> list = storage.getItem('expenses');
+                      list.removeAt(widget.id);
+                      widget.notifyParent();
 
-                  },
-                  child:const StyledIcon(color: Colors.red,icon: Icons.delete),)
+                    },
+                    child:const StyledIcon(color: Colors.red,icon: Icons.delete),),
+                )
               ],
             )
           ],
